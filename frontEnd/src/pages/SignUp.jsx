@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../components/common/Input";
+import { signUp } from "../services/userService";
 export default function SignUp() {
   let navigate = useNavigate();
   const [show, setShow] = useState(false);
+  const [signUpData, setSignUpData] = useState({});
   const signUpInputs = [
     {
       id: 1,
+      name: "userName",
       type: "text",
       placeholder: "username",
       className:
@@ -14,6 +17,7 @@ export default function SignUp() {
     },
     {
       id: 2,
+      name: "email",
       type: "email",
       placeholder: "Email",
       className:
@@ -21,12 +25,22 @@ export default function SignUp() {
     },
     {
       id: 3,
+      name: "password",
       type: show ? "password" : "text",
       className:
         "w-full h-full outline-none px-[20px] py-[10px] bg-[white] rounded-lg",
       placeholder: "Password",
     },
   ];
+  const HandleChage = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setSignUpData((pre) => ({ ...pre, [name]: value }));
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    signUp(signUpData);
+  };
   return (
     <div className="w-full h-[100vh] bg-slate-200 flex items-center justify-center">
       <div className="w-full max-w-[400px] h-[500px] bg-white rounded-lg shadow-gray-400 shadow-lg">
@@ -35,14 +49,19 @@ export default function SignUp() {
             Welcome To <span className="text-white">Chatly</span>
           </h1>
         </div>
-        <form className="w-full flex flex-col gap-[20px] items-center mt-[20px] ">
+        <form
+          className="w-full flex flex-col gap-[20px] items-center mt-[20px]"
+          onSubmit={handleSubmit}
+        >
           {signUpInputs?.map((item) => {
             return item?.placeholder == "Password" ? (
               <div className=" relative w-[90%] h-[50%]  border-2 border-[#20c7ff] overflow-hidden  rounded-lg  shadow-gray-400 shadow-lg">
                 <Input
+                  name={item?.name}
                   type={item?.type}
                   placeholder={item?.placeholder}
                   className={item?.className}
+                  onChange={HandleChage}
                 />
                 <span
                   className="absolute top-[7px] right-[8px] text-[19px] text-[#20c7ff] cursor-pointer"
@@ -53,13 +72,18 @@ export default function SignUp() {
               </div>
             ) : (
               <Input
+                name={item?.name}
                 type={item?.type}
                 placeholder={item?.placeholder}
                 className={item?.className}
+                onChange={HandleChage}
               />
             );
           })}
-          <button className="px-[20px] py-[10px] bg-[#20c7ff] rounded-2xl  shadow-gray-200 shadow-lg w-[200px] mt-[20px] font-semibold hover:shadow-inherit">
+          <button
+            type="submit"
+            className="px-[20px] py-[10px] bg-[#20c7ff] rounded-2xl  shadow-gray-200 shadow-lg w-[200px] mt-[20px] font-semibold hover:shadow-inherit"
+          >
             {" "}
             Sign Up
           </button>

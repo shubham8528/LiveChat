@@ -17,7 +17,7 @@ export default function SignIn() {
     // },
     {
       id: 2,
-      type: "email",
+      type: "text",
       name: "email",
       placeholder: "Email",
       className:

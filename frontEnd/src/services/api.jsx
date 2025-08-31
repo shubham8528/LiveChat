@@ -1,10 +1,14 @@
 import axios from "axios";
 
-export const apiCall = (data, endPoint) => {
+export const apiCall = async (data, request, endPoint) => {
   const API_URL = import.meta.env.VITE_API_URL;
   try {
-    axios.post(`${API_URL}/${endPoint}`, data);
-    console.log(data, endPoint, API_URL, "......");
+    const apiRequest = axios({
+      method: request,
+      url: `${API_URL}/${endPoint}`,
+      data,
+    });
+    return apiRequest.data;
   } catch (err) {
     console.log(err);
   }
