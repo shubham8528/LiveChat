@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import authRouter from "./routes/auth.routes.js"
 import { connectDb } from "./config/DB.js"
 import cors from "cors"
+import userController from "./controllers/user.controller.js"
 dotenv.config()
 
 const port = process.env.PORT || 5000
@@ -16,6 +17,7 @@ app.get("/", (req, res) => {
     res.send('hello')
 })
 app.use("/api/auth", authRouter)
+app.use("/api/auth", userController)
 
 app.listen(port, () => {
     connectDb()
