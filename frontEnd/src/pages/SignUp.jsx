@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../components/common/Input";
-import { signUp } from "../services/userService";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../redux/userSlice";
 export default function SignUp() {
   let navigate = useNavigate();
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [signUpData, setSignUpData] = useState({});
   const signUpInputs = [
@@ -39,7 +41,7 @@ export default function SignUp() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    signUp(signUpData);
+    dispatch(setUserData(signUpData));
   };
   return (
     <div className="w-full h-[100vh] bg-slate-200 flex items-center justify-center">
@@ -84,11 +86,10 @@ export default function SignUp() {
             type="submit"
             className="px-[20px] py-[10px] bg-[#20c7ff] rounded-2xl  shadow-gray-200 shadow-lg w-[200px] mt-[20px] font-semibold hover:shadow-inherit"
           >
-            {" "}
             Sign Up
           </button>
           <p className="cursor-pointer" onClick={() => navigate("/signin")}>
-            Already Have An Account ?{" "}
+            Already Have An Account ?
             <span className="text-[#20c7ff] text-[semibold]"> Sign In</span>
           </p>
         </form>
