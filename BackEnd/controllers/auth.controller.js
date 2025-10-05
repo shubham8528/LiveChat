@@ -15,12 +15,13 @@ export const signUp = async (req, res) => {
         if (password.length > 6) {
             return res.status(400).json({ message: "password must be at 6 characters" })
         }
+        //........ user original password bcrypt and then save in DB...............//
         const hashedPassword = await bcrypt.hash(password, 10)
         const user = await User.create({
             userName, email, password: hashedPassword
         })
         const token = await genToken(user._id)
-        res.cookie("token", token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: "None", secure: false })
+        res.cookie("token", token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: "Strict", secure: false })
         return res.status(201).json(user)
     } catch (error) {
         return res.status(500).json({ message: `signup error: ${error}` })
@@ -30,18 +31,17 @@ export const signUp = async (req, res) => {
 
 export const signIn = async (req, res) => {
     try {
-        const { email, password } = req.body
-        const user = await User.findOne({ email })
+        const { usereName, password } = req.body
+        const user = await User.findOne({ usereName })
         if (!user) {
             return res.status(400).json({ message: "user does't exist" })
         }
-        const isPassword = await User.findOne(password)
-        const isMatch = await bcrypt.compare(isPassword, user?.password)
+        const isMatch = await bcrypt.compare(password, user?.password)
         if (!isMatch) {
             return res.status(400).json({ message: "incorrect password" })
         }
         const token = await genToken(user._id)
-        res.cookie("token", token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: "None", secure: false })
+        res.cookie("token", token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000, sameSite: "strict", secure: false })
         return res.status(201).json(user)
     } catch (error) {
         return res.status(500).json({ message: `signIn error: ${error}` })

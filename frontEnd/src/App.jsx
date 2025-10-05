@@ -1,7 +1,9 @@
 import { Route, Routes } from "react-router-dom";
-import SignUp from "./pages/Signup";
 import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import { UseGetCurrentUser } from "./customHooks/getCurrentUser";
 function App() {
+  UseGetCurrentUser();
   return (
     <>
       <Routes>
