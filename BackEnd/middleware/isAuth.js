@@ -1,14 +1,15 @@
 import jwt from "jsonwebtoken"
 const isAuth = async (req, res, next) => {
     try {
-        let token = req.cookies.token
+        let token = req?.cookies?.token
+        console.log(token, "mytoken")
         if (!token) {
             return res.status(400).json({ message: "Token not found" })
         }
         let verifyToken = await jwt.verify(token, process.env.JWT_SECRET)
         console.log(verifyToken)
-        req.userId = verifyToken.userId
-        console.log(varifyToken)
+        req.userId = verifyToken?.userID
+        console.log("Token Verifyed", verifyToken)
         next()
     } catch (err) {
         return res.status(500).json({ message: "isauth error" })

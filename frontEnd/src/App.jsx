@@ -1,14 +1,29 @@
 import { Route, Routes } from "react-router-dom";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
 import { UseGetCurrentUser } from "./customHooks/getCurrentUser";
+import { allRoutes } from "./routes/AllRoutes";
+import ProtectedRoutes from "./routes/ProtectedRoutes";
 function App() {
   UseGetCurrentUser();
+
   return (
     <>
       <Routes>
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/signin" element={<SignIn />} />
+        {allRoutes?.map((route) => {
+          return (
+            <Route
+              path={route?.path}
+              element={
+                !route?.secure ? (
+                  route?.element
+                ) : (
+                  <ProtectedRoutes>{route?.element}</ProtectedRoutes>
+                )
+              }
+            />
+          );
+        })}
+        {/* <Route path="/signup" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} /> */}
       </Routes>
     </>
   );

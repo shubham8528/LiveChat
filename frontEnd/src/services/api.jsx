@@ -7,6 +7,7 @@ export const apiCall = async (data, request, endPoint) => {
       method: request,
       url: `${API_URL}/${endPoint}`,
       data,
+      withCredentials: true, //important for sending/receiving cookies
     });
     return apiRequest.data;
   } catch (err) {
